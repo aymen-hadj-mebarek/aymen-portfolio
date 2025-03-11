@@ -33,7 +33,7 @@ const handleSubmit = async (e: React.FormEvent) => {
   setIsSubmitting(true)
 
   try {
-    const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}`, formData, {
+    const response = axios.post(`${process.env.NEXT_PUBLIC_API_URL}`, formData, {
       headers: { "Content-Type": "application/json" },
     }).then((response)=>{
       setSubmitSuccess(true)

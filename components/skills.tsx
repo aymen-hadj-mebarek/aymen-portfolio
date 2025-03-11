@@ -6,16 +6,13 @@ import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 const technicalSkills = [
-  { name: "Python", level: 95 },
-  { name: "Machine Learning", level: 90 },
-  { name: "Data Analysis", level: 85 },
-  { name: "Neural Networks", level: 85 },
-  { name: "NLP", level: 80 },
+  { name: "Programming & Software Development (Python)", level: 95 },
+  { name: "Machine Learning & AI", level: 90 },
+  { name: "Data Science & Analytics ", level: 75 },
+  { name: "Natural Language Processing (NLP)", level: 85 },
   { name: "Computer Vision", level: 75 },
-  { name: "Web Development", level: 70 },
-  { name: "Flask", level: 80 },
-  { name: "TensorFlow/Keras", level: 85 },
-  { name: "OpenCV", level: 75 },
+  { name: "Frontend Development", level: 70 },
+  { name: "Backend Development", level: 80 },
 ]
 
 const softSkills = [
@@ -34,11 +31,13 @@ const languages = [
 ]
 
 const certificates = [
-  "Data Analysis with Python",
-  "Algorithms and Data Structures",
-  "Scientific Computing with Python",
-  "Problem Solving",
-  "English IELTS: level C1",
+  {name : "Supervised Machine Learning: Regression and Classification", link: "https://coursera.org/share/5ef7c3f6596ba93b6e98dc513b8b23c8"},
+  {name : "Data Analysis with Python", link: "https://www.freecodecamp.org/certification/Aymen-HadjMebarek/data-analysis-with-python-v7"},
+  {name : "Algorithms and Data Structures", link: "https://www.freecodecamp.org/certification/Aymen-HadjMebarek/javascript-algorithms-and-data-structures-v8"},
+  {name : "Scientific Computing with Python", link: "https://www.freecodecamp.org/certification/Aymen-HadjMebarek/scientific-computing-with-python-v7"},
+  {name : "Problem Solving", link: "https://www.hackerrank.com/certificates/5d0289df0096"},
+  {name : "Responsive Web Design", link: "https://www.freecodecamp.org/certification/Aymen-HadjMebarek/responsive-web-design"},
+  {name : "English IELTS: level C1", link: "#"},
 ]
 
 const Skills = () => {
@@ -151,7 +150,7 @@ const Skills = () => {
                       className="flex items-center"
                     >
                       <div className="h-2 w-2 rounded-full bg-primary mr-3"></div>
-                      <span>{cert}</span>
+                      <span><a href={cert.link} target="_blank">{cert.name}</a></span>
                     </motion.li>
                   ))}
                 </ul>

@@ -10,7 +10,7 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="mb-4 md:mb-0">
             <Link href="/" className="text-xl font-bold tracking-tight">
-              Aymen.dev
+              Aymen.HM
             </Link>
             <p className="text-muted-foreground mt-2">AI Engineer / Python Developer</p>
           </div>
@@ -44,12 +44,12 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t border-border mt-6 pt-6 text-center">
+        {/* <div className="border-t border-border mt-6 pt-6 text-center">
           <p className="text-muted-foreground text-sm flex items-center justify-center">
             © {currentYear} Aymen Hadj Mebarek. All rights reserved. Made with
             <Heart className="h-4 w-4 mx-1 text-red-500" /> in Algeria
           </p>
-        </div>
+        </div> */}
       </div>
     </footer>
   )

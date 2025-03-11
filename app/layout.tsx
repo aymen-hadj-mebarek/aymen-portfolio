@@ -8,8 +8,7 @@ const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "Aymen Hadj Mebarek | AI Engineer & Python Developer",
-  description: "Portfolio of Aymen Hadj Mebarek, an AI Engineer and Python Developer based in Algeria.",
-    generator: 'v0.dev'
+  description: "Portfolio of Aymen Hadj Mebarek, an AI Engineer and Python Developer based in Algeria."
 }
 
 export default function RootLayout({

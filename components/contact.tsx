@@ -8,9 +8,22 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
-import { MapPin, Phone, Mail, Send } from "lucide-react"
+import { MapPin, Phone, Mail, Send, AlertCircle, CheckCircle2 } from "lucide-react"
+import { sendContactEmail } from "@/app/actions"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { useToast } from "@/hooks/use-toast"
+import { z } from "zod"
+
+// Form validation schema
+const contactFormSchema = z.object({
+  name: z.string().min(2, { message: "Name must be at least 2 characters" }),
+  email: z.string().email({ message: "Please enter a valid email address" }),
+  subject: z.string().min(3, { message: "Subject must be at least 3 characters" }),
+  message: z.string().min(10, { message: "Message must be at least 10 characters" }),
+})
 
 const Contact = () => {
+  const { toast } = useToast()
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -18,34 +31,95 @@ const Contact = () => {
     message: "",
   })
 
+  const [errors, setErrors] = useState<Record<string, string>>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitSuccess, setSubmitSuccess] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle")
+  const [errorMessage, setErrorMessage] = useState("")
+
+  const validateForm = () => {
+    try {
+      contactFormSchema.parse(formData)
+      setErrors({})
+      return true
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const newErrors: Record<string, string> = {}
+        error.errors.forEach((err) => {
+          if (err.path[0]) {
+            newErrors[err.path[0].toString()] = err.message
+          }
+        })
+        setErrors(newErrors)
+      }
+      return false
+    }
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
+
+    // Clear error for this field when user starts typing
+    if (errors[name]) {
+      setErrors((prev) => {
+        const newErrors = { ...prev }
+        delete newErrors[name]
+        return newErrors
+      })
+    }
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+
+    // Reset states
+    setSubmitStatus("idle")
+    setErrorMessage("")
+
+    // Validate form
+    if (!validateForm()) {
+      toast({
+        title: "Validation Error",
+        description: "Please check the form for errors",
+        variant: "destructive",
+      })
+      return
+    }
+
     setIsSubmitting(true)
 
-    // Simulate form submission
-    setTimeout(() => {
-      setIsSubmitting(false)
-      setSubmitSuccess(true)
+    try {
+      const result = await sendContactEmail(formData)
 
-      // Reset form after success
-      setTimeout(() => {
-        setSubmitSuccess(false)
+      if (result.success) {
+        setSubmitStatus("success")
+        toast({
+          title: "Message Sent!",
+          description: "Thank you for your message. I'll get back to you soon.",
+        })
+
+        // Reset form after success
         setFormData({
           name: "",
           email: "",
           subject: "",
           message: "",
         })
-      }, 3000)
-    }, 1500)
+      } else {
+        throw new Error(result.error || "Failed to send message")
+      }
+    } catch (error) {
+      setSubmitStatus("error")
+      const errorMsg = error instanceof Error ? error.message : "An unexpected error occurred"
+      setErrorMessage(errorMsg)
+      toast({
+        title: "Error",
+        description: errorMsg,
+        variant: "destructive",
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -104,6 +178,24 @@ const Contact = () => {
               <CardDescription>I'll get back to you as soon as possible.</CardDescription>
             </CardHeader>
             <CardContent>
+              {submitStatus === "success" && (
+                <Alert className="mb-6 bg-green-50 dark:bg-green-950 border-green-200 dark:border-green-900">
+                  <CheckCircle2 className="h-4 w-4 text-green-600 dark:text-green-400" />
+                  <AlertTitle>Message Sent!</AlertTitle>
+                  <AlertDescription>Thank you for your message. I'll get back to you soon.</AlertDescription>
+                </Alert>
+              )}
+
+              {submitStatus === "error" && (
+                <Alert className="mb-6" variant="destructive">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertTitle>Error</AlertTitle>
+                  <AlertDescription>
+                    {errorMessage || "Failed to send your message. Please try again later."}
+                  </AlertDescription>
+                </Alert>
+              )}
+
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
@@ -113,11 +205,12 @@ const Contact = () => {
                     <Input
                       id="name"
                       name="name"
-                      placeholder="John Doe"
+                      placeholder="Your Name"
                       value={formData.name}
                       onChange={handleChange}
-                      required
+                      className={errors.name ? "border-red-500" : ""}
                     />
+                    {errors.name && <p className="text-sm text-red-500">{errors.name}</p>}
                   </div>
 
                   <div className="space-y-2">
@@ -128,11 +221,12 @@ const Contact = () => {
                       id="email"
                       name="email"
                       type="email"
-                      placeholder="john@example.com"
+                      placeholder="email@example.com"
                       value={formData.email}
                       onChange={handleChange}
-                      required
+                      className={errors.email ? "border-red-500" : ""}
                     />
+                    {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
                   </div>
                 </div>
 
@@ -146,8 +240,9 @@ const Contact = () => {
                     placeholder="How can I help you?"
                     value={formData.subject}
                     onChange={handleChange}
-                    required
+                    className={errors.subject ? "border-red-500" : ""}
                   />
+                  {errors.subject && <p className="text-sm text-red-500">{errors.subject}</p>}
                 </div>
 
                 <div className="space-y-2">
@@ -161,11 +256,12 @@ const Contact = () => {
                     rows={5}
                     value={formData.message}
                     onChange={handleChange}
-                    required
+                    className={errors.message ? "border-red-500" : ""}
                   />
+                  {errors.message && <p className="text-sm text-red-500">{errors.message}</p>}
                 </div>
 
-                <Button type="submit" className="w-full" disabled={isSubmitting || submitSuccess}>
+                <Button type="submit" className="w-full" disabled={isSubmitting}>
                   {isSubmitting ? (
                     <span className="flex items-center">
                       <svg
@@ -189,19 +285,6 @@ const Contact = () => {
                         ></path>
                       </svg>
                       Sending...
-                    </span>
-                  ) : submitSuccess ? (
-                    <span className="flex items-center">
-                      <svg
-                        className="w-4 h-4 mr-2"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                      </svg>
-                      Message Sent!
                     </span>
                   ) : (
                     <span className="flex items-center">

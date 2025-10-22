@@ -8,7 +8,7 @@ import Image from 'next/image';
 
 const Hero = () => {
   const [typedText, setTypedText] = useState("")
-  const fullText = "AI Engineer / Python Developer"
+  const fullText = "AI Engineer / Software Engineer"
 
   useEffect(() => {
     let i = 0

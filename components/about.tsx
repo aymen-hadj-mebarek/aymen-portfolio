@@ -22,9 +22,9 @@ const About = () => {
         <Card>
           <CardContent className="p-6">
             <p className="text-lg mb-6">
-              I'm an AI Engineer and Python Developer based in Algiers, Algeria, with a passion for machine learning,
-              data analysis, and intelligent systems. Currently pursuing a Master's degree in Intelligent Computer
-              Systems, I combine academic knowledge with practical experience to create innovative solutions.
+              I'm an AI Engineer and Software Engineer based in Algiers, Algeria, with a passion for machine learning,
+              data analysis, and intelligent systems. Currently an Application developer in ATOS,with a Master's degree in Intelligent Computer
+              Systems and Bachelor's degree in Computer Science, I combine academic knowledge with practical experience to create innovative solutions.
             </p>
             <p className="text-lg mb-6">
               My goal is to contribute to the field of artificial intelligence by developing applications that solve
@@ -36,7 +36,7 @@ const About = () => {
                 AI Enthusiast
               </Badge>
               <Badge variant="outline" className="text-sm">
-                Python Developer
+                Software development
               </Badge>
               <Badge variant="outline" className="text-sm">
                 Machine Learning

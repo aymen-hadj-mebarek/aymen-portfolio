@@ -7,9 +7,20 @@ import { CalendarDays, Briefcase } from "lucide-react"
 
 const experiences = [
   {
+  title: "Application Developer",
+  company: "ATOS",
+  period: "08/2025 – Present",
+  description: [
+    "Develop and maintain enterprise applications using Java, Spring Boot, and Angular.",
+    "Collaborate with cross-functional teams to design scalable and secure software solutions.",
+    "Participate in code reviews, debugging, and performance optimization to enhance application quality.",
+  ],
+  tags: ["Java", "Spring Boot", "Angular", "REST APIs", "Software Development", "Team Collaboration"],
+},
+  {
     title: "Ai and Python Instructor",
     company: "CODE213",
-    period: "03/2025 – Present",
+    period: "03/2025 – 09/2025",
     description: [
       "Teach Python and data structures to build coding skills.",
       "Explain AI concepts and guide model implementation.",

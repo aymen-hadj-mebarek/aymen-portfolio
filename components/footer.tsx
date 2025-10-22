@@ -12,7 +12,7 @@ const Footer = () => {
             <Link href="/" className="text-xl font-bold tracking-tight">
               Aymen.HM
             </Link>
-            <p className="text-muted-foreground mt-2">AI Engineer / Python Developer</p>
+            <p className="text-muted-foreground mt-2">AI Engineer / Software Engineer</p>
           </div>
 
           <div className="flex space-x-4 mb-4 md:mb-0">
@@ -26,7 +26,7 @@ const Footer = () => {
               <span className="sr-only">GitHub</span>
             </a>
             <a
-              href="https://linkedin.com/in/"
+              href="https://www.linkedin.com/in/aymen-hadj-mebarek-894411226/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-muted-foreground hover:text-primary transition-colors"

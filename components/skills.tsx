@@ -31,7 +31,7 @@ const languages = [
 ]
 
 const certificates = [
-  {name : "Supervised Machine Learning: Regression and Classification", link: "https://coursera.org/share/5ef7c3f6596ba93b6e98dc513b8b23c8"},
+  {name : "Machine Learning Specialization", link: "https://coursera.org/share/b449162720fcebff84e30ebbfafbbef6"},
   {name : "Data Analysis with Python", link: "https://www.freecodecamp.org/certification/Aymen-HadjMebarek/data-analysis-with-python-v7"},
   {name : "Algorithms and Data Structures", link: "https://www.freecodecamp.org/certification/Aymen-HadjMebarek/javascript-algorithms-and-data-structures-v8"},
   {name : "Scientific Computing with Python", link: "https://www.freecodecamp.org/certification/Aymen-HadjMebarek/scientific-computing-with-python-v7"},

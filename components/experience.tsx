@@ -18,7 +18,7 @@ const experiences = [
   tags: ["Java", "Spring Boot", "Angular", "REST APIs", "Software Development", "Team Collaboration"],
 },
   {
-    title: "Ai and Python Instructor",
+    title: "Machine Learning and Python Instructor",
     company: "CODE213",
     period: "03/2025 – 09/2025",
     description: [

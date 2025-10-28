@@ -1,12 +1,11 @@
 "use client"
 
 import type React from "react"
-
+import emailjs from "@emailjs/browser"
 import { useState } from "react"
 import { motion } from "framer-motion"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import axios from "axios";
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { MapPin, Phone, Mail, Send } from "lucide-react"
@@ -33,26 +32,38 @@ const handleSubmit = async (e: React.FormEvent) => {
   setIsSubmitting(true)
 
   try {
-    const response = axios.post(`${process.env.NEXT_PUBLIC_API_URL}`, formData, {
-      headers: { "Content-Type": "application/json" },
-    }).then((response)=>{
-      setSubmitSuccess(true)
-      // Reset form after success
-      setTimeout(() => {
-        setSubmitSuccess(false)
-        setFormData({
-          name: "",
-          email: "",
-          subject: "",
-          message: "",
-        })
-      }, 2000)
-    }).catch ((error) => 
-    console.error("Error submitting the form:", error))
+    const result = await emailjs.send(
+      process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
+      process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
+      {
+        name: formData.name,
+        email: formData.email,
+        subject: formData.subject,
+        message: formData.message,
+      },
+      process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+    )
+
+    console.log("Email sent successfully:", result.text)
+    setSubmitSuccess(true)
+
+    // Reset form after success
+    setTimeout(() => {
+      setSubmitSuccess(false)
+      setFormData({
+        name: "",
+        email: "",
+        subject: "",
+        message: "",
+      })
+    }, 2000)
+  } catch (error) {
+    console.error("Error sending email:", error)
   } finally {
     setIsSubmitting(false)
   }
 }
+
   return (
     <section id="contact" className="py-16">
       <motion.div
